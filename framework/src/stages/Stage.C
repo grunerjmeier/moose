@@ -9,7 +9,7 @@
 
 #include "Stage.h"
 
-registerMooseObject("moose_bare_tmechApp", Stage);
+registerMooseObject("MooseApp", Stage);
 
 InputParameters
 Stage::validParams()

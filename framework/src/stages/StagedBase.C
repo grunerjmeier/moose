@@ -10,7 +10,7 @@
 #include "StagedBase.h"
 #include "Stage.h"
 
-registerMooseObject("moose_bare_tmechApp", StagedBase);
+registerMooseObject("MooseApp", StagedBase);
 
 InputParameters
 StagedBase::validParams()

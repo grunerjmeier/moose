@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-registerMooseAction("moose_bare_tmechApp", AddStageItemAction, "add_stage");
+registerMooseAction("MooseApp", AddStageItemAction, "add_stage");
 
 InputParameters
 AddStageItemAction::validParams()
@@ -28,6 +28,7 @@ AddStageItemAction::validParams()
 
 AddStageItemAction::AddStageItemAction(const InputParameters & params) : MooseObjectAction(params)
 {
+  std::cout << "AddStageItemAction.AddStageItemAction: _type = " << _type << "; " << "_name = " << _name << "\n";
 }
 
 void

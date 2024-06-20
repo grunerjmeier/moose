@@ -10,7 +10,7 @@
 #include "AddStagesAction.h"
 #include "FEProblem.h"
 
-registerMooseAction("moose_bare_tmechApp", AddStagesAction, "add_stages");
+registerMooseAction("MooseApp", AddStagesAction, "add_stages");
 
 InputParameters
 AddStagesAction::validParams()
@@ -22,15 +22,21 @@ AddStagesAction::validParams()
 
 AddStagesAction::AddStagesAction(const InputParameters & params) : MooseObjectAction(params)
 {
+  std::cout << "AddStagesAction.AddStagesAction: _type = " << _type << "; " << "_name = " << _name << "\n";
 }
 
 void
 AddStagesAction::act()
 {
-  std::cout << "AddStagesAction.act: _type = " << _type << "; " << "_name = " << _name << "\n";
+  std::cout << "AddStagesAction.act: _type = " << _type << "; " << "_name = " << _name << "\n" << std::flush;
+
+  std::cout << "AddStagesAction.act: _problem = " << _problem << "\n" << std::flush;
 
   // only add ONE stages user object
   if (_problem->hasUserObject("Stages") == false)
+  {
+    std::cout << "AddStagesAction.act: no user object of name ""Stages""...\n" << std::flush;
     _problem->addUserObject(/*type=*/"Stages", /*name=*/"Stages", _moose_object_pars);
-    
+  };
+
 }

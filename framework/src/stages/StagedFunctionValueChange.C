@@ -11,7 +11,7 @@
 #include <regex>
 #include <math.h>
 
-registerMooseObject("moose_bare_tmechApp", StagedFunctionValueChange);
+registerMooseObject("MooseApp", StagedFunctionValueChange);
 
 InputParameters
 StagedFunctionValueChange::validParams()

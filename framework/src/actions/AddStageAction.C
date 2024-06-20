@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-registerMooseAction("moose_bare_tmechApp", AddStageAction, "add_stage");
+registerMooseAction("MooseApp", AddStageAction, "add_stage");
 
 InputParameters
 AddStageAction::validParams()

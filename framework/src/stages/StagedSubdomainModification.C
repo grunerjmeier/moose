@@ -9,7 +9,7 @@
 
 #include "StagedSubdomainModification.h"
 
-registerMooseObject("moose_bare_tmechApp", StagedSubdomainModification);
+registerMooseObject("MooseApp", StagedSubdomainModification);
 
 InputParameters
 StagedSubdomainModification::validParams()

@@ -188,6 +188,11 @@ addActionTypes(Syntax & syntax)
   registerMooseObjectTask("add_control",                  Control,                   false);
   registerMooseObjectTask("add_partitioner",              MoosePartitioner,          false);
 
+  /* Stages Block System */
+  registerMooseObjectTask("add_stages",                   UserObject, /*is_required=*/false);
+  registerMooseObjectTask("add_stage",                    UserObject, /*is_required=*/false);
+  registerMooseObjectTask("add_stage_item",               StagedBase, /*is_required=*/false);
+
   // clang-format on
 
   registerTask("dynamic_object_registration", false);
@@ -375,9 +380,15 @@ addActionTypes(Syntax & syntax)
                            "(add_control)"
                            "(check_output)"
                            "(check_integrity)"
-                           "(create_application_block)");
+                           "(create_application_block)"
+                           "(add_stages)"
+                           "(add_stage)"
+                           "(add_stage_item)");
   // clang-format on
 }
+
+
+
 
 /**
  * Multiple Action class can be associated with a single input file section, in which case all
@@ -608,6 +619,12 @@ associateSyntaxInner(Syntax & syntax, ActionFactory & /*action_factory*/)
 
   // Application Block System
   registerSyntax("CreateApplicationBlockAction", "Application");
+
+  /* Stages Block System */
+  registerSyntaxTask("AddStagesAction", "Stages", "add_stages");
+  registerSyntaxTask("AddStageAction", "Stages/*", "add_stage");
+  registerSyntaxTask("AddStageItemAction", "Stages/*/*", "add_stage_item");
+
 
   addActionTypes(syntax);
 }

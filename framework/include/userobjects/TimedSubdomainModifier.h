@@ -12,6 +12,8 @@
 #include "ElementSubdomainModifier.h"
 #include "TimedElementSubdomainModifier.h"
 #include "DelimitedFileReader.h"
+#include "Stages.h"
+#include "StagedSubdomainModification.h"
 
 /**
  * Modifies elements from entire subdomains based on user input or file input
@@ -31,6 +33,9 @@ protected:
 private:
   void buildFromParameters();
   void buildFromFile();
+  void buildFromStages();
+
+  bool _init_from_stages = false;
 
   /// Times to change the subdomains on. If the time steps do not align with the times,
   /// the subdomain changes will happen at the end of the time step.
