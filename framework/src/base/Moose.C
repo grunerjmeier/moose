@@ -388,9 +388,6 @@ addActionTypes(Syntax & syntax)
   // clang-format on
 }
 
-
-
-
 /**
  * Multiple Action class can be associated with a single input file section, in which case all
  * associated Actions will be created and "acted" on when the associated input file section is
