@@ -21,6 +21,12 @@ InputParameters
 AddStageAction::validParams()
 {
   InputParameters params = MooseObjectAction::validParams();
+
+  params.addParam<std::string>(
+      "type",
+      "Stage",
+      "A string representing the Moose Object that will be built by this Action");
+
   params.addClassDescription("Add a Stage object to the simulation.");
   return params;
 }
