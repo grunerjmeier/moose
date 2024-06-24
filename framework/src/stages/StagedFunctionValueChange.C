@@ -19,10 +19,10 @@ StagedFunctionValueChange::validParams()
   InputParameters params = StagedBase::validParams();
   // params.declareControllable("enable"); // allows Control to enable/disable this type of object
   // params.registerBase("StagedFunctionValueChange");
-  params.addRequiredParam<std::string>("function_name",
-                                       "Name of the staged state variable.");
-  params.addRequiredParam<double>("new_value",
-                                  "Value of the variable at end time.");
+  params.addRequiredParam<std::vector<std::string>>("function_names",
+                                       "Names of the staged state variable.");
+  params.addRequiredParam<std::vector<double>>("new_values",
+                                  "Values of the variable at end time.");
   params.addParam<std::string>("start_time", "t",
                                "Start time for the transition to the new value.");
   params.addParam<std::string>("end_time", "t",
@@ -36,36 +36,38 @@ StagedFunctionValueChange::validParams()
 
 StagedFunctionValueChange::StagedFunctionValueChange(const InputParameters & parameters)
   : StagedBase(parameters),
-    _function_name(getParam<std::string>("function_name")),
+    _function_names(getParam<std::vector<std::string>>("function_names")),
     _step_function_type(getParam<MooseEnum>("step_function_type").getEnum<StepFunctionType>()),
-    _new_value(getParam<double>("new_value")),
+    _new_values(getParam<std::vector<double>>("new_values")),
     _start_time(parseTime(getParam<std::string>("start_time"))),
     _end_time(parseTime(getParam<std::string>("end_time")))
 {
   // consistency check: start time must not be larger than end time
-  if (_start_time>_end_time)
+  if (_start_time > _end_time)
     mooseError("Start time is larger than end time for variable \"" + _function_name + "\" in stage \"" + getStage()->getName() + "\"." );
 }
 
 void 
 StagedFunctionValueChange::setup(std::shared_ptr<FEProblemBase> p)
 {
-  if (p->hasFunction(_function_name) == false)
+  for (const auto & function_name : _function_names)
   {
-    mooseError("Function \"" + _function_name + "\" not found. Please add a function of this name and of type 'StagedFunction'.");
-    // TODO: add function if missing (the code below comed too late...
-    auto type = "StagedFunction";
-    auto original_params = _factory.getValidParams(type);
-    p->addFunction(type, _function_name, original_params);
-  };
-  // StagedFunction & f = p->getFunction<Function>(_function_name);
-
+    if (p->hasFunction(function_name) == false)
+    {
+      mooseError("Function \"" + function_name + "\" not found. Please add a function of this name and of type 'StagedFunction'.");
+      // TODO: add function if missing (the code below comes too late...
+      auto type = "StagedFunction";
+      auto original_params = _factory.getValidParams(type);
+      p->addFunction(type, function_name, original_params);
+    };
+    // StagedFunction & f = p->getFunction<Function>(_function_name);
+  }
 }
 
-std::string
-StagedFunctionValueChange::getVariableName()
+std::vector<std::string>
+StagedFunctionValueChange::getVariableNames()
 {
-  return _function_name;
+  return _function_names;
 }
 
 StagedFunctionValueChange::StepFunctionType
@@ -74,10 +76,10 @@ StagedFunctionValueChange::getStepFunctionType()
   return _step_function_type;
 }
 
-double
-StagedFunctionValueChange::getNewValue()
+std::vector<double>
+StagedFunctionValueChange::getNewValues()
 {
-  return _new_value;
+  return _new_values;
 }
 
 Real

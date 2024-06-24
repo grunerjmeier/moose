@@ -311,17 +311,21 @@ TimedSubdomainModifier::buildFromStages()
 
         // collect all data of this subdomain modification
         Real sdTime = stg.getStageTime();
-        SubdomainName sdFromName = smd.getSubdomainFrom();
-        SubdomainName sdToName = smd.getSubdomainTo();
+        std::vector<SubdomainName> sdFromNames = smd.SubdomainsFrom();
+        std::vector<SubdomainName> sdToNames = smd.SubdomainsTo();
 
         // make SubdomainIDs from SubdomainNames
-        SubdomainID sdFromID = _mesh.getSubdomainID(sdFromName);
-        SubdomainID sdToID = _mesh.getSubdomainID(sdToName);
+        std::vector<SubdomainID> sdFromIDs = _mesh.getSubdomainIDs(sdFromNames);
+        std::vector<SubdomainID> sdToIDs = _mesh.getSubdomainIDs(sdToNames);
 
         // store the data
-        raw_times.push_back(sdTime);
-        raw_from.push_back(sdFromID);
-        raw_to.push_back(sdToID);
+        int n_ids = sdFromIDs.size();
+        for (int k = 0; k < n_ids; ++j)
+        {
+          raw_times.push_back(sdTime);
+          raw_from.push_back(sdFromIDs[k]);
+          raw_to.push_back(sdToIDs[k]);
+        }
 
       };
       

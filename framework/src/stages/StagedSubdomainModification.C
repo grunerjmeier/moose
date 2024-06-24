@@ -17,20 +17,23 @@ StagedSubdomainModification::validParams()
   InputParameters params = StagedBase::validParams();
   // params.declareControllable("enable"); // allows Control to enable/disable this type of object
   // params.registerBase("StagedSubdomainModification");
-  params.addParam<SubdomainName>("from",
-                                 "Subdomain to move all elements from.");
-  params.addParam<SubdomainName>("to",
-                                 "Subdomain to move all elements to.");
+  params.addParam<std::vector<SubdomainName>>("from", "Vector of subdomains to move all elements from.");
+  params.addParam<std::vector<SubdomainName>>("to", "Vector of subdomains to move all elements to.");
   params.addClassDescription("User object that bla bla bla.");
   return params;
 }
 
 StagedSubdomainModification::StagedSubdomainModification(const InputParameters & parameters)
   : StagedBase(parameters),
-    _subdomain_from(getParam<SubdomainName>("from")),
-    _subdomain_to(getParam<SubdomainName>("to"))
+    _subdomains_from(getParam<std::vector<SubdomainName>>("from")),
+    _subdomains_to(getParam<std::vector<SubdomainName>>("to"))
 {
   std::cout << "StagedSubdomainModification::StagedSubdomainModification" << "\n";
+
+  auto const n_subdomains_from = _subdomains_from.size();
+  auto const n_subdomains_to = _subdomains_to.size();
+  if (n_subdomains_from != n_subdomains_to)
+    mooseError("Parameters ""from"" and ""to"" must have the same number of items." );
 }
 
 // void 
@@ -40,14 +43,14 @@ StagedSubdomainModification::StagedSubdomainModification(const InputParameters &
 //   // p->hasOserObject(...)
 // }
 
-SubdomainName
-StagedSubdomainModification::getSubdomainFrom()
+std::vector<SubdomainName>
+StagedSubdomainModification::SubdomainsFrom()
 {
-  return _subdomain_from;
+  return _subdomains_from;
 }
 
-SubdomainName
-StagedSubdomainModification::getSubdomainTo()
+std::vector<SubdomainName>
+StagedSubdomainModification::SubdomainsTo()
 {
-  return _subdomain_to;
+  return _subdomains_to;
 }

@@ -22,11 +22,11 @@ public:
 
   StagedSubdomainModification(const InputParameters & parameters);
   
-  SubdomainName getSubdomainFrom();
-  SubdomainName getSubdomainTo();
+  std::vector<SubdomainName> SubdomainsFrom();
+  std::vector<SubdomainName> SubdomainsTo();
 
 private:
-  const SubdomainName _subdomain_from;
-  const SubdomainName _subdomain_to;
+  const std::vector<SubdomainName> _subdomains_from;
+  const std::vector<SubdomainName> _subdomains_to;
 
 };
