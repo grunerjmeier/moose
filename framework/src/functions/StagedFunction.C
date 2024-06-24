@@ -115,14 +115,15 @@ StagedFunction::getValueInternal(const Real t, const bool timeDerivative) const
       {
         StagedFunctionValueChange & fvc = dynamic_cast<StagedFunctionValueChange &>(item);
 
-        if (fvc.getVariableName() == function_name)
+        auto funcIndex = fvc.getIndexOfFunction(function_name);
+        if (funcIndex >= 0)
         {
           auto t1 = fvc.getStartTime();
           auto t2 = fvc.getEndTime();
 
           if (t1 < last_time)
           {
-            mooseError("Time spans for staged variable \"" + function_name + "\" are overlapping");
+            mooseError("Time spans for staged function \"" + function_name + "\" are overlapping.");
           };
 
           if (t1 <= t)
@@ -130,12 +131,12 @@ StagedFunction::getValueInternal(const Real t, const bool timeDerivative) const
             if (t2 >=t)
             {
               if (timeDerivative == true) {
-                return fvc.getTimeDerivative(t, y);
+                return fvc.getTimeDerivative(funcIndex, t, y);
               } else {
-                return fvc.getValue(t, y);
+                return fvc.getValue(funcIndex, t, y);
               };
             } else {
-              y = fvc.getNewValue();
+              y = fvc.getNewValue(funcIndex);
             };
 
           };

@@ -44,7 +44,7 @@ StagedFunctionValueChange::StagedFunctionValueChange(const InputParameters & par
 {
   // consistency check: start time must not be larger than end time
   if (_start_time > _end_time)
-    mooseError("Start time is larger than end time for variable \"" + _function_name + "\" in stage \"" + getStage()->getName() + "\"." );
+    mooseError("Start time is larger than end time in stage \"" + getStage()->getName() + "\"." );
 }
 
 void 
@@ -65,10 +65,26 @@ StagedFunctionValueChange::setup(std::shared_ptr<FEProblemBase> p)
 }
 
 std::vector<std::string>
-StagedFunctionValueChange::getVariableNames()
+StagedFunctionValueChange::getFunctionNames()
 {
   return _function_names;
 }
+
+int
+StagedFunctionValueChange::getIndexOfFunction(std::string function_name)
+{
+  auto it = std::find(_function_names.begin(), _function_names.end(), function_name);
+  if (it == _function_names.end())
+  {
+    // name not in vector
+    return -1;
+  } else
+  {
+    auto index = std::distance(_function_names.begin(), it);
+    return index;
+  }  
+}
+
 
 StagedFunctionValueChange::StepFunctionType
 StagedFunctionValueChange::getStepFunctionType()
@@ -80,6 +96,12 @@ std::vector<double>
 StagedFunctionValueChange::getNewValues()
 {
   return _new_values;
+}
+
+double
+StagedFunctionValueChange::getNewValue(const int funcIndex)
+{
+  return _new_values[funcIndex];
 }
 
 Real
@@ -101,7 +123,7 @@ StagedFunctionValueChange::getTimesForTimeStepper()
 }
 
 double
-StagedFunctionValueChange::getValue(const Real t, const double old_value)
+StagedFunctionValueChange::getValue(const int funcIndex, const Real t, const double old_value)
 {
   if (t < _start_time)
   {
@@ -112,7 +134,7 @@ StagedFunctionValueChange::getValue(const Real t, const double old_value)
   } else if (t >= _end_time) {
 
     // we are at or after _end_time - just return the new value
-    return _new_value;
+    return _new_values[funcIndex];
 
   } else {
 
@@ -121,18 +143,18 @@ StagedFunctionValueChange::getValue(const Real t, const double old_value)
     const double f = (t - _start_time) / (_end_time - _start_time);
 
     if (_step_function_type == StepFunctionType::LINEAR)
-      return old_value + (_new_value - old_value) * f;
+      return old_value + (_new_values[funcIndex] - old_value) * f;
 
     if (_step_function_type == StepFunctionType::SMOOTH)
     {
       const double p = f * f * (3.0 - 2.0 * f);
-      return old_value + (_new_value - old_value) * p;
+      return old_value + (_new_values[funcIndex] - old_value) * p;
     };
 
     if (_step_function_type == StepFunctionType::PERLIN)
     {
       const double p = f * f * f * (f * (6.0 * f - 15.0) + 10.0);
-      return old_value + (_new_value - old_value) * p;
+      return old_value + (_new_values[funcIndex] - old_value) * p;
     };
 
     mooseError("Unsupported value for \"step_function_type\".");
@@ -140,7 +162,7 @@ StagedFunctionValueChange::getValue(const Real t, const double old_value)
 }
 
 double
-StagedFunctionValueChange::getTimeDerivative(const Real t, const double old_value)
+StagedFunctionValueChange::getTimeDerivative(const int funcIndex, const Real t, const double old_value)
 {
   if (t < _start_time)
   {
@@ -159,18 +181,18 @@ StagedFunctionValueChange::getTimeDerivative(const Real t, const double old_valu
     // equals _end_time, so no need for checking
 
     if (_step_function_type == StepFunctionType::LINEAR)
-      return (_new_value - old_value) / (_end_time - _start_time);
+      return (_new_values[funcIndex] - old_value) / (_end_time - _start_time);
 
     if (_step_function_type == StepFunctionType::SMOOTH)
     {
       Real const x = (t -_start_time) / (_end_time - _start_time);
-      return (old_value - _new_value) * 6 * (-1 + x) * x;
+      return (old_value - _new_values[funcIndex]) * 6 * (-1 + x) * x;
     };
 
     if (_step_function_type == StepFunctionType::PERLIN)
     {
       Real const x = (t -_start_time) / (_end_time - _start_time);
-      return (old_value - _new_value) * -30 * (-1 + x) * (-1 + x) * x * x;
+      return (old_value - _new_values[funcIndex]) * -30 * (-1 + x) * (-1 + x) * x * x;
     };
 
     mooseError("Unsupported value for \"step_function_type\".");

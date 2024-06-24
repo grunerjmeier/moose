@@ -31,21 +31,24 @@ public:
 
   virtual void setup(std::shared_ptr<FEProblemBase> p) override;
   
-  std::string getVariableName();
+  std::vector<std::string> getFunctionNames();
+  int getIndexOfFunction(std::string function_name);
+
   StepFunctionType getStepFunctionType();
-  double getNewValue();
+  std::vector<double> getNewValues();
+  double getNewValue(const int funcIndex);
   Real getStartTime();
   Real getEndTime();
 
-  double getValue(const Real t, const double old_value);
-  double getTimeDerivative(const Real t, const double old_value);
+  double getValue(const int funcIndex, const Real t, const double old_value);
+  double getTimeDerivative(const int funcIndex, const Real t, const double old_value);
 
   std::vector<Real> getTimesForTimeStepper() override;
 
 private:
-  const std::string _function_name;
+  const std::vector<std::string> _function_names;
   const StepFunctionType _step_function_type;
-  const double _new_value;
+  const std::vector<double> _new_values;
   const Real _start_time;
   const Real _end_time;
 
