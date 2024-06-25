@@ -36,7 +36,7 @@ StagedSubdomainModification::StagedSubdomainModification(const InputParameters &
     mooseError("Parameters ""from"" and ""to"" must have the same number of items." );
 }
 
-// void 
+// void
 // StagedSubdomainModification::setup(std::shared_ptr<FEProblemBase> p)
 // {
 //   // ToDo: make sure there is one user object of type TimedSubdomainModifier with from_stages=true

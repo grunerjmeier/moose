@@ -79,7 +79,7 @@ AddStageItemAction::act()
   //  // std::cout << "AddStageItemAction.act: stage.stage_time = " << stg.getStageTime() << "\n";
 }
 
-std::vector<std::string> 
+std::vector<std::string>
 AddStageItemAction::split(std::string target, std::string delimiter)
 {
   std::vector<std::string> components;

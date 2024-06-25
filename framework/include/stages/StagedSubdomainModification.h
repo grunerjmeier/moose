@@ -13,7 +13,8 @@
 #include "StagedBase.h"
 
 /**
- * Base class for deriving Stages
+ * This class is used to define the transition of all elements of a given subdomain to another at a
+ * given point in time.
  */
 class StagedSubdomainModification : public StagedBase
 {
@@ -21,12 +22,11 @@ public:
   static InputParameters validParams();
 
   StagedSubdomainModification(const InputParameters & parameters);
-  
+
   std::vector<SubdomainName> SubdomainsFrom();
   std::vector<SubdomainName> SubdomainsTo();
 
 private:
   const std::vector<SubdomainName> _subdomains_from;
   const std::vector<SubdomainName> _subdomains_to;
-
 };

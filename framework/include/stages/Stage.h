@@ -13,7 +13,7 @@
 #include "GeneralUserObject.h"
 
 /**
- * Base class for deriving Stages
+ * Class for definition of a model stage
  */
 class Stage : public GeneralUserObject
 {
@@ -25,7 +25,7 @@ public:
   virtual void initialize() override;
   virtual void execute() override;
   virtual void finalize() override;
-  
+
   std::string getName();
 
   /**
@@ -43,5 +43,4 @@ private:
   /// Point in time this stage is associated with
   const Real _stage_time;
   std::vector<std::reference_wrapper<GeneralUserObject>> _items;
-
 };

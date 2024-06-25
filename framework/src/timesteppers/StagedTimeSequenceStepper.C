@@ -42,7 +42,7 @@ StagedTimeSequenceStepper::init()
   for (int i = 0; i < n; ++i)
   {
     Stage & stg = vecStages[i].get();
-    time_sequence.push_back(stg.getStageTime()); 
+    time_sequence.push_back(stg.getStageTime());
 
     // iterate all items of this stage
     auto items = stg.getItems();
@@ -62,7 +62,7 @@ StagedTimeSequenceStepper::init()
         // append to time_sequence
         time_sequence.insert(std::end(time_sequence), std::begin(sb_item_times), std::end(sb_item_times));
       };
-      
+
     };
 
   };
@@ -74,7 +74,7 @@ StagedTimeSequenceStepper::init()
   // remove all times smaller or equal to zero
   time_sequence.erase(std::remove_if(
       time_sequence.begin(), time_sequence.end(),
-      [](const Real & x) { 
+      [](const Real & x) {
           return x <= 0;
       }), time_sequence.end());
 

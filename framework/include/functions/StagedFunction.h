@@ -14,12 +14,8 @@
 #include "StagedFunctionValueChange.h"
 
 /**
- * This class is used to evaluate symbolic equations passed in to Moose through
- * the input file. It supports symbolic variables that you can change by putting
- * a different value in a reference returned by getVarAddr().
- *
- * Documentation for the Function Parser can be found at:
- * http://warp.povusers.org/FunctionParser/fparser.html
+ * This class is used to define a function using objects of type StagedFunctionValueChange in the
+ * stage tree.
  */
 class StagedFunction : public Function
 {
@@ -76,7 +72,6 @@ protected:
   friend class ParsedFunctionTest;
 
 private:
-
   mutable double _last_value_t = NAN;
   mutable double _last_value;
 
@@ -84,5 +79,4 @@ private:
   mutable double _last_timeDerivative;
 
   double getValueInternal(Real t, bool timeDerivative) const;
-
 };

@@ -69,8 +69,8 @@ Stages::addStage(Stage & stg)
 
   // sort the internal vector of stages by time.
   std::sort(_stages.begin(), _stages.end(), [](const std::reference_wrapper<Stage> &a, const std::reference_wrapper<Stage> &b)
-    { 
-      return a.get().getStageTime() < b.get().getStageTime(); 
+    {
+      return a.get().getStageTime() < b.get().getStageTime();
     });
 }
 

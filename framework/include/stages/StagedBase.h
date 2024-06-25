@@ -14,7 +14,7 @@
 #include "Stage.h"
 
 /**
- * Base class for deriving Stages
+ * Base class for deriving staged objects
  */
 class StagedBase : public GeneralUserObject
 {
@@ -39,5 +39,4 @@ private:
 
   // Pointer to the owning stage
   Stage * const _stage;
-
 };

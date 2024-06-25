@@ -12,7 +12,7 @@
 #include "TimeSequenceStepperBase.h"
 
 /**
- * Solves the PDEs at a sequence of time points given by a tree of Stages-blocks 
+ * Solves the PDEs at a sequence of time points given by a tree of Stages-blocks
  * in the input file.
  * Adjusts the time sequence vector according to Transient start_time and end_time.
  */

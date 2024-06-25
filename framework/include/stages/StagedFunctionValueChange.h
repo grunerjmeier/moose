@@ -13,7 +13,7 @@
 #include "StagedBase.h"
 
 /**
- * Base class for deriving Stages
+ * This class is used to define a value change in a StagedFunction at a given point in time.
  */
 class StagedFunctionValueChange : public StagedBase
 {
@@ -30,7 +30,7 @@ public:
   StagedFunctionValueChange(const InputParameters & parameters);
 
   virtual void setup(std::shared_ptr<FEProblemBase> p) override;
-  
+
   std::vector<std::string> getFunctionNames();
   int getIndexOfFunction(std::string function_name);
 
@@ -53,5 +53,4 @@ private:
   const Real _end_time;
 
   Real parseTime(std::string s);
-
 };

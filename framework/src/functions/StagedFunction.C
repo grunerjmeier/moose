@@ -22,7 +22,7 @@ InputParameters
 StagedFunction::validParams()
 {
   InputParameters params = Function::validParams();
- 
+
   params.addClassDescription("Function created by staging.");
 
   return params;
@@ -54,7 +54,7 @@ StagedFunction::value(Real t, const Point & /*p*/) const
 RealGradient
 StagedFunction::gradient(Real /*t*/, const Point & /*p*/) const
 {
-  // this staged function only depends on time 
+  // this staged function only depends on time
   return 0;
 }
 
@@ -146,7 +146,7 @@ StagedFunction::getValueInternal(const Real t, const bool timeDerivative) const
         };
 
       };
-      
+
     };
 
   };
